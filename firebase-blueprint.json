@@ -1,0 +1,88 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information and role.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "admin"] },
+        "enrolledCourses": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "email", "role"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "HSC or Admission course details.",
+      "type": "object",
+      "properties": {
+        "courseId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string", "enum": ["HSC", "Admission"] },
+        "subject": { "type": "string" },
+        "fee": { "type": "number" },
+        "duration": { "type": "string" },
+        "thumbnail": { "type": "string" },
+        "syllabus": { "type": "array" }
+      },
+      "required": ["title", "category"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Educational resource like PDF notes and sheets.",
+      "type": "object",
+      "properties": {
+        "noteId": { "type": "string" },
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "chapter": { "type": "string" },
+        "topic": { "type": "string" },
+        "pdfUrl": { "type": "string" },
+        "type": { "type": "string", "enum": ["Note", "Sheet", "Tricks"] }
+      },
+      "required": ["title", "subject", "type"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "Student generated question for Q&A.",
+      "type": "object",
+      "properties": {
+        "questionId": { "type": "string" },
+        "text": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "resolved": { "type": "boolean" },
+        "upvotes": { "type": "number" }
+      },
+      "required": ["text", "authorId"]
+    },
+    "Answer": {
+      "title": "Answer",
+      "description": "Teacher or student response to a question.",
+      "type": "object",
+      "properties": {
+        "answerId": { "type": "string" },
+        "text": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "isHelpful": { "type": "boolean" }
+      },
+      "required": ["text", "authorId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "Global user profiles." },
+    "/courses/{courseId}": { "schema": "Course", "description": "Academic and admission courses." },
+    "/notes/{noteId}": { "schema": "Note", "description": "Learning materials." },
+    "/questions/{questionId}": { "schema": "Question", "description": "Student Q&A forum." },
+    "/questions/{questionId}/answers/{answerId}": { "schema": "Answer", "description": "Answers to students questions." }
+  }
+}
